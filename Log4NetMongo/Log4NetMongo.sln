@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4NetMongo", "Log4NetMongo\Log4NetMongo.csproj", "{CA8E75A4-6464-46FC-B37A-B16B1B8090A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4NetMongo.Test", "Log4NetMongo.Test\Log4NetMongo.Test.csproj", "{D85E7FED-452F-4281-8CA4-DDE06EAD07AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA8E75A4-6464-46FC-B37A-B16B1B8090A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA8E75A4-6464-46FC-B37A-B16B1B8090A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA8E75A4-6464-46FC-B37A-B16B1B8090A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA8E75A4-6464-46FC-B37A-B16B1B8090A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85E7FED-452F-4281-8CA4-DDE06EAD07AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85E7FED-452F-4281-8CA4-DDE06EAD07AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85E7FED-452F-4281-8CA4-DDE06EAD07AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85E7FED-452F-4281-8CA4-DDE06EAD07AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1895B4DD-689F-4167-BAF0-04D2CD3A3B44}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://canplatform.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Log4NetMongo\\Log4NetMongo.csproj
+		SccProjectName1 = Log4NetMongo
+		SccLocalPath1 = Log4NetMongo
+		SccProjectUniqueName2 = Log4NetMongo.Test\\Log4NetMongo.Test.csproj
+		SccProjectName2 = Log4NetMongo.Test
+		SccLocalPath2 = Log4NetMongo.Test
+	EndGlobalSection
+EndGlobal
