@@ -14,20 +14,32 @@ namespace Log4NetMongo
         private string TenantId;
         private readonly string Application;
         private readonly string Environment;
+        private readonly string Collection;
+        private readonly string ConnectionString;
 
         public BaseLogger()
         {
             string _application = ConfigurationManager.AppSettings["ApplicationName"];
             string _environment = ConfigurationManager.AppSettings["Environment"];
+            string _collection = ConfigurationManager.AppSettings["MongoLogCollectionName"];
+            string _connectionString = ConfigurationManager.ConnectionStrings["MongoLogConnection"]?.ConnectionString;
 
             if (string.IsNullOrEmpty(_application))
-                throw new ArgumentNullException("ApplicationName", "ApplicationName int appSetting is not set");
+                throw new ArgumentNullException("ApplicationName", "ApplicationName in appSettings is not set");
 
             if (string.IsNullOrEmpty(_environment))
-                throw new ArgumentNullException("ApplicationName", "ApplicationName int appSetting is not set");
+                throw new ArgumentNullException("Environment", "Environment in appSettings is not set");
+
+            if (string.IsNullOrEmpty(_collection))
+                throw new ArgumentNullException("MongoLogCollectionName", "MongoLogCollectionName in appSettings is not set");
+
+            if (string.IsNullOrEmpty(_connectionString))
+                throw new ArgumentNullException("MongoLogConnection", "MongoLogConnection in connectionStrings is not set");
 
             Application = _application;
             Environment = _environment;
+            Collection = _collection;
+            ConnectionString = _connectionString;
             GlobalContext.Properties.Clear();
             ThreadContext.Properties.Clear();
             SetInstanceVariables(ClaimsPrincipal.Current);
@@ -45,11 +57,11 @@ namespace Log4NetMongo
         protected ILog GetConfiguredLog()
         {
             #region ConfigXML
-            string xml = @"
+            string xml = $@"
 <log4net>
-	<appender name='MongoDBAppender1' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
-		<connectionString value='mongodb://appuser:admin#123@CAN-ALPHA:9010/MACH_LOG?authSource=admin' />
-        <collectionName value='application.log' />
+	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
+		<connectionString value='{ConnectionString}' />
+        <collectionName value='{Collection}' />
         <newCollectionMaxDocs value='100000' />
         <field>
 			<name value='timestamp' />
@@ -122,7 +134,7 @@ namespace Log4NetMongo
 	</appender>
 	<root>
 		<level value='ALL' />
-		<appender-ref ref='MongoDBAppender1' />
+		<appender-ref ref='MongoDBAppender' />
 	</root>
 </log4net>
 ";
