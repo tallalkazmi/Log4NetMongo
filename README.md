@@ -1,20 +1,20 @@
 # Log4NetMongo
-Project for creating application logs on MongoDb using Log4Net
+Includes all Log4Net methods with `MongoDbAppender` configuration for creating application logs for multiple applications and environments with `user_id` from `ClaimsIdentity`. Supports multi-tenancy by logging `tenant` information from `ClaimsIdentity`.
 
 ## Installation
 1. Add Log4NetMongo package.
-2. Set _MongoLogConnection_ in ConnectionStrings and _MongoLogCollectionName_ in AppSettings
-3. Add _ApplicationName_ and _Environment_ values in AppSettings (if you choose to).
+2. Set __MongoLogConnection__ in `ConnectionStrings` and __MongoLogCollectionName__ in `AppSettings`.
+3. Add __ApplicationName__ and __Environment__ values in `AppSettings`, if you choose to you can initialize the class as shown in the first example.
 
 ## Usage
-
+1. Initialize class with __ApplicationName__ and __Environment__
 ```csharp
 using Log4NetMongo;
 
 AppLogger logger = new AppLogger(LoggerApplication.MachAuth, LoggerEnvironment.Dev);
 logger.LogInfo("Test Info");
 ```
-
+2. Initialize class with __ApplicationName__ and __Environment__ in `AppSettings`
 ```csharp
 using Log4NetMongo;
 
@@ -24,7 +24,7 @@ logger.LogInfo("Test Info");
 ```
 
 ### Log Model
-1. Timestamp (System time)
+1. Timestamp (System Time)
 2. Level
 3. Thread
 4. Application
