@@ -243,3 +243,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/Log4NetMongo/Log4NetMongo/Log4NetMongo.nuspec
+/Log4NetMongo/Log4NetMongo/Sample_Log4NetMongo.nuspec
+/Log4NetMongo/Log4NetMongo/nuget.exe
