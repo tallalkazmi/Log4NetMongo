@@ -62,7 +62,7 @@ namespace Log4NetMongo
 	<appender name='MongoDBAppender' type='Log4Mongo.MongoDBAppender, Log4Mongo'>
 		<connectionString value='{ConnectionString}' />
         <collectionName value='{Collection}' />
-        <newCollectionMaxDocs value='100000' />
+        <expireAfterSeconds value='2592000' />
         <field>
 			<name value='timestamp' />
 			<layout type='log4net.Layout.RawTimeStampLayout' />
