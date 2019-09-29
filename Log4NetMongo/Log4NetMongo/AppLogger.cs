@@ -1,25 +1,56 @@
 ﻿using log4net;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web.Script.Serialization;
+using System.Linq;
 
 namespace Log4NetMongo
 {
     public class AppLogger : BaseLogger
     {
-        log4net.ILog target;
+        readonly ILog target;
 
         /// <summary>
-        /// Must set ApplicationName and Environment variables in appsettings.
+        /// Initialize Log4Net with optional settings.
         /// </summary>
-        public AppLogger()
+        /// <param name="application">Application's name. If not provided reads from AppSetting key 'ApplicationName'</param>
+        /// <param name="environment">Environment's name. If not provided reads from AppSetting key 'Environment'</param>
+        /// <param name="connectionString">MongoDb ConnectionString. If not provided reads from connectionStrings name 'MongoLogConnection'</param>
+        /// <param name="collectionName">MongoDb Collection's name. If not provided reads from AppSettings key 'MongoLogCollectionName'</param>
+        /// <param name="logLevel">Log4Net log level. Default is set to 'ALL'. If not provided reads from AppSettings key 'LogLevel'</param>
+        public AppLogger(string application = null,
+            string environment = null,
+            string connectionString = null,
+            string collectionName = null,
+            LogLevel? logLevel = null)
         {
-            target = GetConfiguredLog();
-        }
+            base.Application = string.IsNullOrWhiteSpace(application) ?
+                ConfigurationManager.AppSettings.AllKeys.Any(x => x == "ApplicationName") ?
+                ConfigurationManager.AppSettings["ApplicationName"] : throw new SettingsPropertyNotFoundException("Key 'ApplicationName' does not exists.") : application;
 
-        public AppLogger(string application, string environment) : base(application, environment)
-        {
+            base.Environment = string.IsNullOrWhiteSpace(environment) ?
+                ConfigurationManager.AppSettings.AllKeys.Any(x => x == "Environment") ?
+                ConfigurationManager.AppSettings["Environment"] : throw new SettingsPropertyNotFoundException("Key 'Environment' does not exists.") : environment;
+
+            base.ConnectionString = string.IsNullOrWhiteSpace(connectionString) ?
+                ConfigurationManager.ConnectionStrings["MongoLogConnection"] != null ?
+                ConfigurationManager.ConnectionStrings["MongoLogConnection"].ConnectionString : throw new SettingsPropertyNotFoundException("Key 'MongoLogConnection' does not exists.") : connectionString;
+
+            base.Collection = string.IsNullOrWhiteSpace(collectionName) ?
+                ConfigurationManager.AppSettings.AllKeys.Any(x => x == "MongoLogCollectionName") ?
+                ConfigurationManager.AppSettings["MongoLogCollectionName"] : throw new SettingsPropertyNotFoundException("Key 'MongoLogCollectionName' does not exists.") : collectionName;
+
+            if (ConfigurationManager.AppSettings.AllKeys.Any(x => x == "LogLevel"))
+            {
+                string _logLevelString = ConfigurationManager.AppSettings["LogLevel"];
+                bool isParsed = Enum.TryParse(_logLevelString, out LogLevel _logLevel);
+                if (isParsed) LogLevel = _logLevel;
+                else throw new InvalidCastException("Key 'LogLevel' is not of an acceptable value. Please set from one of the following: All, Debug, Info, Warn, Error, Fatal, Off");
+            }
+            base.LogLevel = logLevel;
+
             target = GetConfiguredLog();
         }
 
@@ -32,7 +63,6 @@ namespace Log4NetMongo
 
             if (data != null)
             {
-                
                 JavaScriptSerializer oSerializer = new JavaScriptSerializer();
                 string dataJson = oSerializer.Serialize(data);
                 ThreadContext.Properties["data"] = dataJson;

@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="AppLogger.cs" />
     <Compile Include="BaseLogger.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

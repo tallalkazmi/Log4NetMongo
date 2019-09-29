@@ -1,7 +1,5 @@
 ﻿using log4net;
 using log4net.Config;
-using System;
-using System.Configuration;
 using System.IO;
 using System.Security.Claims;
 using System.Text;
@@ -12,43 +10,14 @@ namespace Log4NetMongo
     {
         private string Username;
         private string TenantId;
-        private readonly string Application;
-        private readonly string Environment;
-        private readonly string Collection;
-        private readonly string ConnectionString;
+        protected string Application;
+        protected string Environment;
+        protected string Collection;
+        protected string ConnectionString;
+        protected LogLevel? LogLevel;
 
         public BaseLogger()
         {
-            string _application = ConfigurationManager.AppSettings["ApplicationName"];
-            string _environment = ConfigurationManager.AppSettings["Environment"];
-            string _collection = ConfigurationManager.AppSettings["MongoLogCollectionName"];
-            string _connectionString = ConfigurationManager.ConnectionStrings["MongoLogConnection"]?.ConnectionString;
-
-            if (string.IsNullOrEmpty(_application))
-                throw new ArgumentNullException("ApplicationName", "ApplicationName in appSettings is not set");
-
-            if (string.IsNullOrEmpty(_environment))
-                throw new ArgumentNullException("Environment", "Environment in appSettings is not set");
-
-            if (string.IsNullOrEmpty(_collection))
-                throw new ArgumentNullException("MongoLogCollectionName", "MongoLogCollectionName in appSettings is not set");
-
-            if (string.IsNullOrEmpty(_connectionString))
-                throw new ArgumentNullException("MongoLogConnection", "MongoLogConnection in connectionStrings is not set");
-
-            Application = _application;
-            Environment = _environment;
-            Collection = _collection;
-            ConnectionString = _connectionString;
-            GlobalContext.Properties.Clear();
-            ThreadContext.Properties.Clear();
-            SetInstanceVariables(ClaimsPrincipal.Current);
-        }
-
-        public BaseLogger(string application, string environment)
-        {
-            Application = application;
-            Environment = environment;
             GlobalContext.Properties.Clear();
             ThreadContext.Properties.Clear();
             SetInstanceVariables(ClaimsPrincipal.Current);
@@ -133,7 +102,7 @@ namespace Log4NetMongo
 		</field>
 	</appender>
 	<root>
-		<level value='ALL' />
+		<level value='{(LogLevel.HasValue ? LogLevel.ToString().ToUpper() : "ALL")}' />
 		<appender-ref ref='MongoDBAppender' />
 	</root>
 </log4net>
